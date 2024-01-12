@@ -1,12 +1,11 @@
 require "active_support/core_ext/integer/time"
 
-# The test environment is used exclusively to run your application's
-# test suite. You never need to work with it otherwise. Remember that
-# your test database is "scratch space" for the test suite and is wiped
-# and recreated between test runs. Don't rely on the data there!
-
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
+
+  # Enable the session store for your application in the test environment
+  # config.session_store :cookie_store, key: '_fitness_tracker_session'
+  # config.middleware.use ActionDispatch::Session::CookieStore, key: '_fitness_tracker_session'
 
   # Turn false under Spring and add config.action_view.cache_template_loading = true.
   config.cache_classes = true
@@ -23,7 +22,7 @@ Rails.application.configure do
   }
 
   # Show full error reports and disable caching.
-  config.consider_all_requests_local       = true
+  config.consider_all_requests_local = true
   config.action_controller.perform_caching = false
   config.cache_store = :null_store
 

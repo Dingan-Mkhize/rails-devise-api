@@ -118,6 +118,9 @@ GEM
     method_source (1.0.0)
     mini_mime (1.1.5)
     minitest (5.20.0)
+    minitest-rails (7.0.1)
+      minitest (~> 5.10)
+      railties (~> 7.0.0)
     msgpack (1.7.2)
     net-imap (0.4.6)
       date
@@ -205,6 +208,7 @@ DEPENDENCIES
   devise
   devise-jwt
   jsonapi-serializer
+  minitest-rails
   pg (~> 1.1)
   puma (~> 5.0)
   rack-cors

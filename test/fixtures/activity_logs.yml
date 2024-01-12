@@ -1,0 +1,11 @@
+log_one:
+  user: user_one
+  excercise: 'Jogging'
+  duration: 30
+  date: '2023-01-01'
+
+log_two:
+  user: user_two
+  excercise: 'Swimming'
+  duration: 45
+  date: '2023-01-02'
