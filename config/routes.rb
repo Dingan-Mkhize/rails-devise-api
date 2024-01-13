@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :activity_logs, :workouts
+  resources :activity_logs
   get 'current_user', to: 'current_user#index'
   devise_for :users, path: '', path_names: {
     sign_in: 'login',
