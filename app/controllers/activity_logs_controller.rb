@@ -17,18 +17,22 @@ class ActivityLogsController < ApplicationController
   end
 
   # POST /activity_logs
-  def create
-    puts ActivityLog.last.errors.full_messages unless ActivityLog.count > previous_count
+def create
+  # Get the count of activity logs before creating a new one
+  previous_count = ActivityLog.count
 
-    # Builds a new activity log linked to the current user
-    @activity_log = current_user.activity_logs.build(activity_log_params)
+  # Builds a new activity log linked to the current user
+  @activity_log = current_user.activity_logs.build(activity_log_params)
 
-    if @activity_log.save
-      render json: @activity_log, status: :created, location: @activity_log
-    else
-      render json: @activity_log.errors, status: :unprocessable_entity
-    end
+  if @activity_log.save
+    render json: @activity_log, status: :created, location: @activity_log
+  else
+    # Output errors from the last activity log
+    puts ActivityLog.last.errors.full_messages if ActivityLog.count > previous_count
+
+    render json: @activity_log.errors, status: :unprocessable_entity
   end
+end
 
   # PATCH/PUT /activity_logs/1
   def update
