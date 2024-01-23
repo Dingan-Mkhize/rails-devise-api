@@ -3,6 +3,25 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   include RackSessionFix
   respond_to :json
+
+
+def create
+    super do |resource|
+      if resource.persisted?
+        sign_in(resource) # Sign in the user
+
+        # Check if the JWT token is included in the response headers
+        token = response.headers['Authorization'].split(' ').last if response.headers['Authorization'].present?
+
+        render json: {
+          status: { code: 200, message: 'Signed up successfully.' },
+          data: UserSerializer.new(resource).serializable_hash[:data][:attributes],
+          token: token # Send the token to the client
+        } and return
+      end
+    end
+  end
+
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
@@ -64,16 +83,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
   private
 
   def respond_with(resource, _opts = {})
-    if resource.persisted?
-      render json: {
-        status: {code: 200, message: 'Signed up sucessfully.'},
-        data: UserSerializer.new(resource).serializable_hash[:data][:attributes]
-      }
-    else
-      render json: {
-        status: {code: 422, message: "User couldn't be created successfully. #{resource.errors.full_messages.to_sentence}"}
-      }, status: :unprocessable_entity
-    end
+  if resource.persisted?
+    token = response.headers['Authorization'].split(' ').last if response.headers['Authorization'].present?
+    render json: {
+      status: {code: 200, message: 'Signed up successfully.'},
+      data: UserSerializer.new(resource).serializable_hash[:data][:attributes],
+      token: token
+    }
+  else
+    render json: {
+      status: {code: 422, message: "User couldn't be created successfully. #{resource.errors.full_messages.to_sentence}"}
+    }, status: :unprocessable_entity
   end
+end
 
 end
