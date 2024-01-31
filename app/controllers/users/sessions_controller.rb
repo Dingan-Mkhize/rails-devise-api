@@ -32,5 +32,12 @@ class Users::SessionsController < Devise::SessionsController
       }, status: :unauthorized
     end
   end
+
+  # def refresh_token
+  #   return head(:unauthorized) unless current_user
+
+  #   new_token = Warden::JWTAuth::UserEncoder.new.call(current_user, :user, nil)
+  #   render json: { token: new_token[0], exp: Time.at(new_token[1]['exp']) }, status: :ok
+  # end
 end
 
